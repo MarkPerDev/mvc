@@ -12,19 +12,12 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="BenefitCostPerYear" Type="decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="Discount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="BenefitCostPerYear" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="DOB" Type="date" Nullable="false" />
           <Property Name="SSN" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Emp_Id" Type="int" Nullable="false" />
-          <Property Name="DependentRelation_Id" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="DependentRelation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Relation" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="PerPayPeriodDeduction" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GetsDiscount" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
@@ -33,24 +26,15 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="BenefitCostPerYear" Type="decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="SalaryPerYear" Type="decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="Discount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="TotalBenefitCostPerYear" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SalaryPerYear" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="DOB" Type="date" />
           <Property Name="SSN" Type="varchar" MaxLength="50" />
+          <Property Name="TotalPayPeriodDeduction" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GetsDiscount" Type="bit" Nullable="false" />
+          <Property Name="BenefitCostPerYear" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="NetPayAfterDeduction" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
-        <Association Name="FK_Dependent_ToDependentRelation">
-          <End Role="DependentRelation" Type="Self.DependentRelation" Multiplicity="1" />
-          <End Role="Dependent" Type="Self.Dependent" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DependentRelation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Dependent">
-              <PropertyRef Name="DependentRelation_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Dependent_ToEmployee">
           <End Role="Employee" Type="Self.Employee" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -67,12 +51,7 @@
         </Association>
         <EntityContainer Name="HRModelStoreContainer">
           <EntitySet Name="Dependent" EntityType="Self.Dependent" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DependentRelation" EntityType="Self.DependentRelation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Dependent_ToDependentRelation" Association="Self.FK_Dependent_ToDependentRelation">
-            <End Role="DependentRelation" EntitySet="DependentRelation" />
-            <End Role="Dependent" EntitySet="Dependent" />
-          </AssociationSet>
           <AssociationSet Name="FK_Dependent_ToEmployee" Association="Self.FK_Dependent_ToEmployee">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="Dependent" EntitySet="Dependent" />
@@ -89,22 +68,13 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="BenefitCostPerYear" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="Discount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="BenefitCostPerYear" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Emp_Id" Type="Int32" Nullable="false" />
-          <Property Name="DependentRelation_Id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="DependentRelation" Relationship="Self.FK_Dependent_ToDependentRelation" FromRole="Dependent" ToRole="DependentRelation" />
           <NavigationProperty Name="Employee" Relationship="Self.FK_Dependent_ToEmployee" FromRole="Dependent" ToRole="Employee" />
-        </EntityType>
-        <EntityType Name="DependentRelation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Relation" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Dependents" Relationship="Self.FK_Dependent_ToDependentRelation" FromRole="DependentRelation" ToRole="Dependent" />
+          <Property Name="PerPayPeriodDeduction" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GetsDiscount" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
@@ -113,25 +83,16 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="BenefitCostPerYear" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="SalaryPerYear" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="Discount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="SalaryPerYear" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="DOB" Type="DateTime" Precision="0" />
           <Property Name="SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Dependents" Relationship="Self.FK_Dependent_ToEmployee" FromRole="Employee" ToRole="Dependent" />
+          <Property Name="TotalPayPeriodDeduction" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GetsDiscount" Type="Boolean" Nullable="false" />
+          <Property Name="TotalBenefitCostPerYear" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="BenefitCostPerYear" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="NetPayAfterDeduction" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
-        <Association Name="FK_Dependent_ToDependentRelation">
-          <End Role="DependentRelation" Type="Self.DependentRelation" Multiplicity="1" />
-          <End Role="Dependent" Type="Self.Dependent" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DependentRelation">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Dependent">
-              <PropertyRef Name="DependentRelation_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Dependent_ToEmployee">
           <End Role="Employee" Type="Self.Employee" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -148,12 +109,7 @@
         </Association>
         <EntityContainer Name="HREntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Dependents" EntityType="Self.Dependent" />
-          <EntitySet Name="DependentRelations" EntityType="Self.DependentRelation" />
           <EntitySet Name="Employees" EntityType="Self.Employee" />
-          <AssociationSet Name="FK_Dependent_ToDependentRelation" Association="Self.FK_Dependent_ToDependentRelation">
-            <End Role="DependentRelation" EntitySet="DependentRelations" />
-            <End Role="Dependent" EntitySet="Dependents" />
-          </AssociationSet>
           <AssociationSet Name="FK_Dependent_ToEmployee" Association="Self.FK_Dependent_ToEmployee">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Dependent" EntitySet="Dependents" />
@@ -168,35 +124,30 @@
           <EntitySetMapping Name="Dependents">
             <EntityTypeMapping TypeName="HRModel.Dependent">
               <MappingFragment StoreEntitySet="Dependent">
+                <ScalarProperty Name="GetsDiscount" ColumnName="GetsDiscount" />
+                <ScalarProperty Name="PerPayPeriodDeduction" ColumnName="PerPayPeriodDeduction" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="BenefitCostPerYear" ColumnName="BenefitCostPerYear" />
-                <ScalarProperty Name="Discount" ColumnName="Discount" />
                 <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="SSN" ColumnName="SSN" />
                 <ScalarProperty Name="Emp_Id" ColumnName="Emp_Id" />
-                <ScalarProperty Name="DependentRelation_Id" ColumnName="DependentRelation_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DependentRelations">
-            <EntityTypeMapping TypeName="HRModel.DependentRelation">
-              <MappingFragment StoreEntitySet="DependentRelation">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Relation" ColumnName="Relation" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="HRModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="NetPayAfterDeduction" ColumnName="NetPayAfterDeduction" />
+                <ScalarProperty Name="BenefitCostPerYear" ColumnName="BenefitCostPerYear" />
+                <ScalarProperty Name="TotalBenefitCostPerYear" ColumnName="TotalBenefitCostPerYear" />
+                <ScalarProperty Name="GetsDiscount" ColumnName="GetsDiscount" />
+                <ScalarProperty Name="TotalPayPeriodDeduction" ColumnName="TotalPayPeriodDeduction" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="BenefitCostPerYear" ColumnName="BenefitCostPerYear" />
                 <ScalarProperty Name="SalaryPerYear" ColumnName="SalaryPerYear" />
-                <ScalarProperty Name="Discount" ColumnName="Discount" />
                 <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="SSN" ColumnName="SSN" />
               </MappingFragment>

@@ -74,9 +74,6 @@
     <Compile Include="Dependent.cs">
       <DependentUpon>HREntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="DependentRelation.cs">
-      <DependentUpon>HREntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Employee.cs">
       <DependentUpon>HREntities.tt</DependentUpon>
     </Compile>
@@ -101,9 +98,6 @@
     <Compile Include="Views\Employee.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="HR.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="HREntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>HREntities.edmx</DependentUpon>
@@ -113,9 +107,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>HREntities.edmx</DependentUpon>
       <LastGenOutput>HREntities1.cs</LastGenOutput>
-    </Content>
-    <Content Include="HR_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using PLCodeTest.Service;
 using System.Web.Mvc;
 
 namespace PLCodeTest.Controllers
@@ -10,7 +7,10 @@ namespace PLCodeTest.Controllers
 	{
 		public ActionResult Index()
 		{
-			return View();
+			using (var context = new EmployeeService())
+			{
+				return View(context.GetAllEmployees());
+			}
 		}
 
 		public ActionResult About()

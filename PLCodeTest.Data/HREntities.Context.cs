@@ -26,7 +26,6 @@ namespace PLCodeTest.Data
         }
     
         public virtual DbSet<Dependent> Dependents { get; set; }
-        public virtual DbSet<DependentRelation> DependentRelations { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
     }
 }

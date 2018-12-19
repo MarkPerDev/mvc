@@ -1,0 +1,82 @@
+﻿@model PLCodeTest.Data.Views.Employee
+@{
+    ViewBag.Title = ResourceWeb.detailsPageTitle;
+}
+
+<h2>Details:</h2>
+
+<div class="form-horizontal">
+    <p>
+        <div>
+            <strong>Employee:</strong>
+            <strong>@Model.FirstName&nbsp;@Model.LastName</strong>
+        </div>
+
+        <div>
+            <strong>Salary:</strong>
+            <strong>$52,000.00 (based on $2000 * 26)</strong>
+        </div>
+        <div>
+            <strong>Benefit cost:</strong>
+            <strong>@string.Format("{0:C}", @Model.BenefitCostPerYear)</strong>
+            @if (Model.GetsDiscount)
+            {
+                <strong>(discount applied)</strong>
+            }
+        </div>
+    </p>
+
+
+    @if (Model.Dependents != null)
+    {
+        foreach (var item in Model.Dependents)
+        {
+            <p>
+                <div>
+                    <strong>Dependent:</strong>
+                    <strong>@item.FirstName&nbsp;@item.LastName</strong>
+                </div>
+                <div>
+                    <strong>Benefit cost:</strong>
+                    <strong>@string.Format("{0:C}", item.BenefitCostPerYear)</strong>
+                    @if (item.GetsDiscount)
+                    {
+                        <strong>(discount applied)</strong>
+                    }
+                </div>
+            </p>
+        }
+    }
+            <p>
+                <div>
+                    <strong>Total Benefit Cost:</strong>
+                    <strong>@string.Format("{0:C}", @Model.TotalBenefitCostPerYear)&nbsp;*</strong>
+                </div>
+
+                <div>
+                    <strong>Paycheck Deduction:</strong>
+                    <strong>@string.Format("{0:C}", @Model.PayPeriodDeduction)&nbsp;**</strong>
+                </div>
+                <div>
+                    <strong>Paycheck Minus Deduction:</strong>
+                    <strong>@string.Format("{0:C}", @Model.NetPayAfterDeduction)&nbsp;***</strong>
+                </div>
+            </p>
+
+            <p>
+
+                <div>
+                    <strong>*&nbsp;&nbsp;based on employee and dependent benefit costs combined</strong>
+                </div>
+
+                <div>
+                    <strong>**&nbsp;&nbsp;based on Total Benefit cost divided by 26</strong>
+                </div>
+
+                <div>
+                    <strong>***&nbsp;&nbsp;based on $2000 minus Paycheck deduction</strong>
+                </div>
+            </p>
+
+</div>
+

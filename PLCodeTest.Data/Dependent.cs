@@ -18,13 +18,12 @@ namespace PLCodeTest.Data
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public decimal BenefitCostPerYear { get; set; }
-        public Nullable<decimal> Discount { get; set; }
         public System.DateTime DOB { get; set; }
         public string SSN { get; set; }
         public int Emp_Id { get; set; }
-        public int DependentRelation_Id { get; set; }
+        public Nullable<decimal> PerPayPeriodDeduction { get; set; }
+        public bool GetsDiscount { get; set; }
     
-        public virtual DependentRelation DependentRelation { get; set; }
         public virtual Employee Employee { get; set; }
     }
 }

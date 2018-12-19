@@ -6,9 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="044307cdf2d94bdd950d1414a36a37d2" Name="Diagram1">
         <EntityTypeShape EntityType="HRModel.Dependent" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="HRModel.DependentRelation" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="HRModel.Employee" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
-        <AssociationConnector Association="HRModel.FK_Dependent_ToDependentRelation" ManuallyRouted="false" />
         <AssociationConnector Association="HRModel.FK_Dependent_ToEmployee" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

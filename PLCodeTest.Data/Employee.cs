@@ -23,11 +23,14 @@ namespace PLCodeTest.Data
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public decimal BenefitCostPerYear { get; set; }
         public decimal SalaryPerYear { get; set; }
-        public Nullable<decimal> Discount { get; set; }
         public Nullable<System.DateTime> DOB { get; set; }
         public string SSN { get; set; }
+        public Nullable<decimal> TotalPayPeriodDeduction { get; set; }
+        public bool GetsDiscount { get; set; }
+        public decimal TotalBenefitCostPerYear { get; set; }
+        public decimal BenefitCostPerYear { get; set; }
+        public Nullable<decimal> NetPayAfterDeduction { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dependent> Dependents { get; set; }

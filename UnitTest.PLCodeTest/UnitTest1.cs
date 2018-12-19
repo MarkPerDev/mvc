@@ -10,7 +10,7 @@ namespace UnitTest.PLCodeTest
 		[TestMethod]
 		public void GetAllEmployees()
 		{
-			using (var svc = new BenefitsService())
+			using (var svc = new EmployeeService())
 			{
 				var results = svc.GetAllEmployees();
 			}
