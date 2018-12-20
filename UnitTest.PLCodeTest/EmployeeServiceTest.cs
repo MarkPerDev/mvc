@@ -60,7 +60,7 @@ namespace UnitTest.PLCodeTest
 				Assert.IsNotNull(result);
 				Assert.AreEqual(lastNameGuid, result.LastName);
 				Assert.IsTrue(result.PayPeriodDeduction.Value > 0);
-				// Assert no discounts were applied
+				// Assert that no discounts were applied
 				Assert.IsFalse(result.GetsDiscount);
 				Assert.AreEqual(1000, result.TotalBenefitCostPerYear.Value);
 				decimal deduction = Math.Round(result.TotalBenefitCostPerYear.Value / 26m, 2);
@@ -95,7 +95,7 @@ namespace UnitTest.PLCodeTest
 				Assert.IsTrue(result.PayPeriodDeduction.Value > 0);
 
 				decimal costPerYear = 1000m - (1000m * .1m);
-				// Assert a discounts was applied
+				// Assert that a discount was applied
 				Assert.IsTrue(result.GetsDiscount);
 				Assert.AreEqual(costPerYear, result.TotalBenefitCostPerYear.Value);
 				decimal deduction = Math.Round(result.TotalBenefitCostPerYear.Value / 26m, 2);
