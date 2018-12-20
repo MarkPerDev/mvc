@@ -121,7 +121,7 @@ namespace PLCodeTest.Service
 			emp.TotalPayPeriodDeduction = emp.TotalBenefitCostPerYear / 26m;
 			emp.TotalPayPeriodDeduction = Math.Round(emp.TotalPayPeriodDeduction.Value, 2);
 
-			// Add here pay check net after deduction
+			// Add here pay check amount after deduction
 			emp.NetPayAfterDeduction = 2000m - emp.TotalPayPeriodDeduction;
 			emp.NetPayAfterDeduction = Math.Round(emp.NetPayAfterDeduction.Value, 2);
 

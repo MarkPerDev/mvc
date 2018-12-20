@@ -36,15 +36,16 @@ namespace UnitTest.PLCodeTest
 			}
 		}
 
-
+		// Confirms that an employee was created
+		// and no discounts were applied
 		[TestMethod]
-		public void CreateAnEmployee_Test()
+		public void CreateAnEmployeeNoDiscounts_Test()
 		{
-			var fNameGuid = Guid.NewGuid().ToString();
+			var lastNameGuid = Guid.NewGuid().ToString();
 			var newEmp = new Employee()
 			{
-				FirstName = fNameGuid,
-				LastName = "Test",
+				FirstName = "Steve",
+				LastName = lastNameGuid,
 				BenefitCostPerYear = 1000m,
 				SSN = @"222-33-4444",
 				DOB = DateTime.Now
@@ -57,8 +58,48 @@ namespace UnitTest.PLCodeTest
 
 				var result = svc.GetEmployee(_empId.Value);
 				Assert.IsNotNull(result);
-				Assert.AreEqual(fNameGuid, result.FirstName);
+				Assert.AreEqual(lastNameGuid, result.LastName);
 				Assert.IsTrue(result.PayPeriodDeduction.Value > 0);
+				// Assert no discounts were applied
+				Assert.IsFalse(result.GetsDiscount);
+				Assert.AreEqual(1000, result.TotalBenefitCostPerYear.Value);
+				decimal deduction = Math.Round(result.TotalBenefitCostPerYear.Value / 26m, 2);
+				Assert.AreEqual(deduction, result.PayPeriodDeduction.Value);
+			}
+		}
+
+		// Confirms that an employee was created
+		// and a 10% discount was applied based on the name starting
+		// with 'A'
+		[TestMethod]
+		public void CreateAnEmployeeWithDiscount_Test()
+		{
+			var lastNameGuid = Guid.NewGuid().ToString();
+			var newEmp = new Employee()
+			{
+				FirstName = "Adam",
+				LastName = lastNameGuid,
+				BenefitCostPerYear = 1000m,
+				SSN = @"222-33-4444",
+				DOB = DateTime.Now
+			};
+
+			using (var svc = new EmployeeService())
+			{
+				_empId = svc.SaveEmployee(newEmp);
+				Assert.IsNotNull(_empId);
+
+				var result = svc.GetEmployee(_empId.Value);
+				Assert.IsNotNull(result);
+				Assert.AreEqual(lastNameGuid, result.LastName);
+				Assert.IsTrue(result.PayPeriodDeduction.Value > 0);
+
+				decimal costPerYear = 1000m - (1000m * .1m);
+				// Assert a discounts was applied
+				Assert.IsTrue(result.GetsDiscount);
+				Assert.AreEqual(costPerYear, result.TotalBenefitCostPerYear.Value);
+				decimal deduction = Math.Round(result.TotalBenefitCostPerYear.Value / 26m, 2);
+				Assert.AreEqual(deduction, result.PayPeriodDeduction.Value);
 			}
 		}
 
