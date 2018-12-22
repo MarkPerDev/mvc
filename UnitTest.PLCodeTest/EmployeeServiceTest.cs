@@ -50,8 +50,7 @@ namespace UnitTest.PLCodeTest
 				LastName = lastNameGuid,
 				BenefitCostPerYear = 1000m,
 				SSN = @"222-33-4444",
-				DOB = DateTime.Now,
-				Dependents = new List<Dependent>()
+				DOB = DateTime.Now
 			};
 
 			using (var svc = new EmployeeService())
@@ -84,8 +83,7 @@ namespace UnitTest.PLCodeTest
 				LastName = lastNameGuid,
 				BenefitCostPerYear = 1000m,
 				SSN = @"222-33-4444",
-				DOB = DateTime.Now,
-				Dependents = new List<Dependent>()
+				DOB = DateTime.Now
 			};
 
 			using (var svc = new EmployeeService())

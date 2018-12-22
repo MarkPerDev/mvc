@@ -97,6 +97,7 @@ namespace PLCodeTest.Service
 			};
 
 			emp.BenefitCostPerYear = (emp.GetsDiscount) ? CalculateDiscount(1000m, .1m) : 1000m;
+			emp.TotalBenefitCostPerYear = emp.BenefitCostPerYear;
 
 			foreach (var d in newEmployee.Dependents.ToList())
 			{
