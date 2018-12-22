@@ -4,6 +4,8 @@ using PLCodeTest.Service;
 using PLCodeTest.Data.Views;
 using PLCodeTest.Data;
 using Employee = PLCodeTest.Data.Views.Employee;
+using Dependent = PLCodeTest.Data.Views.Dependent;
+using System.Collections.Generic;
 
 namespace UnitTest.PLCodeTest
 {
@@ -48,7 +50,8 @@ namespace UnitTest.PLCodeTest
 				LastName = lastNameGuid,
 				BenefitCostPerYear = 1000m,
 				SSN = @"222-33-4444",
-				DOB = DateTime.Now
+				DOB = DateTime.Now,
+				Dependents = new List<Dependent>()
 			};
 
 			using (var svc = new EmployeeService())
@@ -81,7 +84,8 @@ namespace UnitTest.PLCodeTest
 				LastName = lastNameGuid,
 				BenefitCostPerYear = 1000m,
 				SSN = @"222-33-4444",
-				DOB = DateTime.Now
+				DOB = DateTime.Now,
+				Dependents = new List<Dependent>()
 			};
 
 			using (var svc = new EmployeeService())

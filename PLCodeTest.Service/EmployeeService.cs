@@ -1,5 +1,6 @@
 ﻿using PLCodeTest.Data;
 using PLCodeTest.Data.Views;
+using PLCodeTest.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Linq;
 
 namespace PLCodeTest.Service
 {
-	public class EmployeeService : BaseServices
-  {
+	public class EmployeeService : BenefiltCalculationService, IEmployeeService
+	{
 		/// <summary>
 		/// Returns all employees
 		/// </summary>
@@ -61,22 +62,18 @@ namespace PLCodeTest.Service
 				PayPeriodDeduction = empFromDB.TotalPayPeriodDeduction,
 				NetPayAfterDeduction = empFromDB.NetPayAfterDeduction
 			};
-
-			if (empFromDB.Dependents != null)
-			{
 				emp.Dependents = new List<Data.Views.Dependent>();
 
-				foreach (var d in empFromDB.Dependents)
-				{
-					var dep = new Data.Views.Dependent();
-					dep.FirstName = d.FirstName;
-					dep.LastName = d.LastName;
-					dep.DOB = d.DOB;
-					dep.SSN = d.SSN;
-					dep.GetsDiscount = d.GetsDiscount;
-					dep.BenefitCostPerYear = d.BenefitCostPerYear;
-					emp.Dependents.Add(dep);
-				}
+			foreach (var d in empFromDB.Dependents)
+			{
+				var dep = new Data.Views.Dependent();
+				dep.FirstName = d.FirstName;
+				dep.LastName = d.LastName;
+				dep.DOB = d.DOB;
+				dep.SSN = d.SSN;
+				dep.GetsDiscount = d.GetsDiscount;
+				dep.BenefitCostPerYear = d.BenefitCostPerYear;
+				emp.Dependents.Add(dep);
 			}
 
 			return emp;
@@ -98,32 +95,27 @@ namespace PLCodeTest.Service
 				SalaryPerYear = newEmployee.SalaryPerYear,
 				GetsDiscount = newEmployee.FirstName.ToLower().Substring(0, 1) == "a"
 			};
-			emp.BenefitCostPerYear = (emp.GetsDiscount) ? 1000m - (1000m * .1m) : 1000m;
-			emp.TotalBenefitCostPerYear = emp.BenefitCostPerYear;
 
-			if (newEmployee.Dependents != null)
+			emp.BenefitCostPerYear = (emp.GetsDiscount) ? CalculateDiscount(1000m, .1m) : 1000m;
+
+			foreach (var d in newEmployee.Dependents.ToList())
 			{
-				foreach (var d in newEmployee.Dependents)
-				{
-					var dep = new Data.Dependent();
-					dep.FirstName = d.FirstName;
-					dep.LastName = d.LastName;
-					dep.DOB = d.DOB.Value;
-					dep.SSN = d.SSN;
-					dep.Emp_Id = newEmployee.EmployeeId;
-					dep.GetsDiscount = d.FirstName.ToLower().Substring(0, 1) == "a";
-					dep.BenefitCostPerYear = (dep.GetsDiscount) ? 500m - (500m * .1m) : 500m;
-					emp.TotalBenefitCostPerYear += dep.BenefitCostPerYear;
-					emp.Dependents.Add(dep);
-				}
+				var dep = new Data.Dependent();
+				dep.FirstName = d.FirstName;
+				dep.LastName = d.LastName;
+				dep.DOB = d.DOB.Value;
+				dep.SSN = d.SSN;
+				dep.Emp_Id = newEmployee.EmployeeId;
+				dep.GetsDiscount = d.FirstName.ToLower().Substring(0, 1) == "a";
+				dep.BenefitCostPerYear = (dep.GetsDiscount) ? CalculateDiscount(500m, .1m) : 500m;
+				emp.TotalBenefitCostPerYear += dep.BenefitCostPerYear;
+				emp.Dependents.Add(dep);
 			}
 
-			emp.TotalPayPeriodDeduction = emp.TotalBenefitCostPerYear / 26m;
-			emp.TotalPayPeriodDeduction = Math.Round(emp.TotalPayPeriodDeduction.Value, 2);
+			emp.TotalPayPeriodDeduction = CalculateDeduction(emp.TotalBenefitCostPerYear, 26m);			
 
 			// Add here pay check amount after deduction
-			emp.NetPayAfterDeduction = 2000m - emp.TotalPayPeriodDeduction;
-			emp.NetPayAfterDeduction = Math.Round(emp.NetPayAfterDeduction.Value, 2);
+			emp.NetPayAfterDeduction = CalculateGrossafterDeduction(2000m, emp.TotalPayPeriodDeduction.Value);
 
 			DBContext.Employees.Add(emp);
 			DBContext.SaveChanges();

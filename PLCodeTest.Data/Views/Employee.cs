@@ -53,6 +53,26 @@ namespace PLCodeTest.Data.Views
 		[Required]
 		public string SSN { get; set; }
 
-		public IList<Dependent> Dependents { get; set; }
+
+		private IList<Dependent> _dependents;
+
+
+		// Make sure that we have an initialized list
+		public IList<Dependent> Dependents
+		{
+			get
+			{
+				if (_dependents == null)
+				{
+					_dependents = new List<Dependent>();
+				}
+				return _dependents;
+			}
+
+			set
+			{
+				_dependents = value;
+			}
+		}
 }
 }

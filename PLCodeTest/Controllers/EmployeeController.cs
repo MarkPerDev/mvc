@@ -1,4 +1,5 @@
-﻿using PLCodeTest.Data.Views;
+﻿using PLCodeTest.Controllers.Interface;
+using PLCodeTest.Data.Views;
 using PLCodeTest.Service;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Web.Mvc;
 
 namespace PLCodeTest.Controllers
 {
-  public class EmployeeController : Controller
+  public class EmployeeController : BaseController
   {
     // GET: Employee
     public ActionResult Index()
@@ -26,11 +27,8 @@ namespace PLCodeTest.Controllers
 
 			Employee emp = null;
 			if (ModelState.IsValid)
-			{
-				using (var context = new EmployeeService())
-				{
-					emp = context.GetEmployee(id.Value);
-				}
+			{				
+				emp = EmpContext.GetEmployee(id.Value);
 			}
 
 			// Go to home page if model is not valid
@@ -49,11 +47,8 @@ namespace PLCodeTest.Controllers
     {
 			if (ModelState.IsValid)
 			{
-				using (var context = new EmployeeService())
-				{
-					var result = context.SaveEmployee(employee);
-					return RedirectToAction("Details", new { id = result });
-				}
+				var result = EmpContext.SaveEmployee(employee);
+				return RedirectToAction("Details", new { id = result });
 			}
 
 			// Go to home page after a post has been created
@@ -86,10 +81,7 @@ namespace PLCodeTest.Controllers
     {
 			if (ModelState.IsValid)
 			{
-				using (var context = new EmployeeService())
-				{
-					context.DeleteEmployee(id);
-				}
+				EmpContext.DeleteEmployee(id);
 			}
 			// Go to home page after an employee has been removed
 			return RedirectToAction("Index", "Home");
